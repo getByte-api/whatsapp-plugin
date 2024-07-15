@@ -17,13 +17,22 @@ class WhatsAppService
         }
     }
 
-    public static function getStatus(Account $account)
+    public static function getStatus(Account $account) : StatusConnectionResponse
     {
         if ($account->whatsapp_type == 'whatsapp-wpp') {
-            return WhatsAppWpp::getStatus($account);
+            $statusResponse = WhatsAppWpp::getStatus($account);
         } else {
-            return WhatsAppEvolution::getStatus($account);
+            $statusResponse = WhatsAppEvolution::getStatus($account);
         }
+
+        if ($statusResponse->getStatus()) {
+            $account->status = $statusResponse->getStatus();
+        } else {
+            $account->status = 'CONNECTED';
+            $account->connected_at = now();
+        }
+
+        return $statusResponse;
     }
 
     public static function send(Account $account, string $messageType, string $phoneNumber, string $content, $document_filename = null, $caption = null)

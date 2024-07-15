@@ -2,7 +2,7 @@
 
 namespace GetByte\Whatsapp\Classes;
 
-class StatusConnectionRespose
+class StatusConnectionResponse
 {
     protected $qrcode;
 

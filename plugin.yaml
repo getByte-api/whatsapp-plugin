@@ -14,3 +14,9 @@ permissions:
     getbyte.whatsapp.accounts:
         tab: API getByte
         label: 'Contas'
+    getbyte.whatsapp.accounts.create:
+        tab: API getByte
+        label: 'Criar conta'
+    getbyte.whatsapp.accounts.send_test:
+        tab: API getByte
+        label: 'Enviar mensagem de teste'

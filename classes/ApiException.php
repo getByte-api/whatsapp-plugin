@@ -28,8 +28,10 @@ class ApiException extends \Exception
     protected function prepareMessage()
     {
         $message = '';
-        if ($this->content->message) {
+        if ($this->content->message ?? false) {
             $message = $this->content->message;
+        } else if ($this->content->error ?? false) {
+            $message = $this->content->error;
         }
 
         $detail = $this->content->response->response->message ?? [];

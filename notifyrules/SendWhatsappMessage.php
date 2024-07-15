@@ -52,6 +52,21 @@ class SendWhatsappMessage extends ActionBase
      */
     public function triggerAction($params)
     {
+        if ($this->host->account_type == 'account') {
+            $account = Account::where('id', $this->host->account)->firstOrFail();
+        } else if ($this->host->account_type == 'secret_key') {
+            $secret_key = Util::twigRawParser((string)$this->host->secret_key, $params);
+            $account = Account::where('secret_key', $secret_key)->firstOrFail();
+        } else if ($this->host->account_type == 'account_id') {
+            $account_id = Util::twigRawParser((string)$this->host->account_id, $params);
+            $account = Account::where('id', $account_id)->firstOrFail();
+        }
+
+        if ($account->status != 'CONNECTED') {
+            WhatsAppService::getStatus($account);
+            throw new \Exception('The WhatsApp account is not connected - ' . $account->status . ' - ' . $account->name);
+        }
+
         $phoneNumber = Util::twigRawParser((string)$this->host->user_phone_number, $params);
         $phoneNumber = '55' . ltrim($phoneNumber, '55');
         $phoneNumber = Phone::justnumber($phoneNumber);
@@ -67,16 +82,6 @@ class SendWhatsappMessage extends ActionBase
             $content = Util::twigRawParser((string)$this->host->document, $params);
         } else {
             $content = Util::twigRawParser($messageType, $params);
-        }
-
-        if ($this->host->account_type == 'account') {
-            $account = Account::where('id', $this->host->account)->firstOrFail();
-        } else if ($this->host->account_type == 'secret_key') {
-            $secret_key = Util::twigRawParser((string)$this->host->secret_key, $params);
-            $account = Account::where('secret_key', $secret_key)->firstOrFail();
-        } else if ($this->host->account_type == 'account_id') {
-            $account_id = Util::twigRawParser((string)$this->host->account_id, $params);
-            $account = Account::where('id', $account_id)->firstOrFail();
         }
 
         try {

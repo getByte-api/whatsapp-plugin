@@ -22,7 +22,8 @@ class Accounts extends BaseController
     public $formConfig = 'config_form.yaml';
 
     public $requiredPermissions = [
-        'getbyte.whatsapp.accounts'
+        'getbyte.whatsapp.accounts',
+        'getbyte.whatsapp.accounts.*'
     ];
 
     public function __construct()
@@ -36,6 +37,10 @@ class Accounts extends BaseController
 
     public function index_onLoadSendTest()
     {
+        if (!$this->user->hasAccess('getbyte.whatsapp.accounts.send_test')) {
+            throw new ValidationException(['account' => 'Você não tem permissão para enviar mensagens de teste']);
+        }
+
         $this->vars['account_id'] = post('account_id');
         return $this->makePartial('popup_send_test');
     }
@@ -48,6 +53,11 @@ class Accounts extends BaseController
 
     public function onSendTest()
     {
+        if (!$this->user->hasAccess('getbyte.whatsapp.accounts.send_test')) {
+            Flash::error('Você não tem permissão para enviar mensagens de teste');
+            return;
+        }
+
         $account = Account::find(post('account_id'));
         $message = post('message');
         $phone = post('phone');
@@ -132,7 +142,11 @@ class Accounts extends BaseController
 
         $model->whatsapp_type = $accountDetail->api_type;
 
-        $statusResponse = WhatsAppService::getStatus($model);
+        try {
+            $statusResponse = WhatsAppService::getStatus($model);
+        } catch (\Exception $exception) {
+            throw new ValidationException(['secret_key' => $exception->getMessage()]);
+        }
 
         if ($statusResponse->getStatus()) {
             $model->status = $statusResponse->getStatus();

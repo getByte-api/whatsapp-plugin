@@ -10,7 +10,7 @@ class WhatsAppEvolution
 {
     use ApiTrait;
 
-    public static function connect(Account $account): StatusConnectionRespose
+    public static function connect(Account $account): StatusConnectionResponse
     {
         try {
             $response = self::http($account)->get('evolution/instance/connectionState');
@@ -20,7 +20,7 @@ class WhatsAppEvolution
 
         $responseState = json_decode($response->getBody()->getContents());
 
-        $status = new StatusConnectionRespose();
+        $status = new StatusConnectionResponse();
 
         if ($responseState && ($responseState->response->instance->state == 'connecting' || $responseState->response->instance->state == 'close')) {
             try {
@@ -44,7 +44,7 @@ class WhatsAppEvolution
         return $status;
     }
 
-    public static function getStatus(Account $account): StatusConnectionRespose
+    public static function getStatus(Account $account): StatusConnectionResponse
     {
         try {
             $response = self::http($account)->get('evolution/instance/connectionState');
@@ -54,7 +54,7 @@ class WhatsAppEvolution
 
         $responseState = json_decode($response->getBody()->getContents());
 
-        $status = new StatusConnectionRespose();
+        $status = new StatusConnectionResponse();
         $statusCode = $responseState ? $responseState->response?->instance?->state : 'disconnected';
         $status->setStatus($statusCode);
 

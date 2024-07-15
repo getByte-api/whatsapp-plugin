@@ -10,12 +10,12 @@ class WhatsAppWpp
 {
     use ApiTrait;
 
-    public static function connect(Account $account): StatusConnectionRespose
+    public static function connect(Account $account): StatusConnectionResponse
     {
         return self::getStatus($account);
     }
 
-    public static function getStatus(Account $account): StatusConnectionRespose
+    public static function getStatus(Account $account): StatusConnectionResponse
     {
         try {
             $response = self::http($account)
@@ -26,7 +26,7 @@ class WhatsAppWpp
 
         $response = json_decode($response->getBody()->getContents());
 
-        $status = new StatusConnectionRespose();
+        $status = new StatusConnectionResponse();
         $status->setStatus($response->response->state ?? 'CONNECTED');
         if ($response->response && property_exists($response->response, 'qrcode'))
             $status->setQrCode($response->response?->qrcode);
