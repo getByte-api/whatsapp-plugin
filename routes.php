@@ -19,27 +19,23 @@ Route::post('connect/whatsapp/connect-device', function (\Illuminate\Http\Reques
     $account = Account::find($account_id);
 
     try {
-        return response()->json(connectDevice($account));
+
+        if (!$account) {
+            throw new \Exception('Conta não encontrada');
+        }
+
+        $statusResponse = WhatsAppService::connect($account);
+
+        $account->status = $statusResponse->getStatus();
+
+        if ($account->status == 'CONNECTED') {
+            $account->connected_at = now();
+        }
+
+        $account->save();
+
+        return response()->json($statusResponse->toArray());
     } catch (Exception $e) {
         return response()->json(['error' => $e->getMessage()]);
     }
 });
-
-function connectDevice(Account $account): array
-{
-    if (!$account) {
-        throw new Exception('Conta não encontrada');
-    }
-
-    $statusResponse = WhatsAppService::connect($account);
-
-    $account->status = $statusResponse->getStatus();
-
-    if ($account->status == 'CONNECTED') {
-        $account->connected_at = now();
-    }
-
-    $account->save();
-
-    return $statusResponse->toArray();
-}

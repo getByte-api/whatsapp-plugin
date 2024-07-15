@@ -12,8 +12,9 @@ class SendWhatsappMessage extends ActionBase
     {
         return [
             'account_type'      => 'required|in:account,secret_key,account_id',
-            'account_id'        => 'required_if:account_type,account',
+            'account_id'        => 'required_if:account_type,account_id',
             'secret_key'        => 'required_if:account_type,secret_key',
+            'account'           => 'required_if:account_type,account',
             'message_type'      => 'required',
             'user_phone_number' => 'required',
             'text'              => 'required_if:message_type,text',
