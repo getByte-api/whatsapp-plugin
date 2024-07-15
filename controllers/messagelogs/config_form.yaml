@@ -1,0 +1,19 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: Registro de Mensagens
+
+# Model Form Field configuration
+form: $/getbyte/whatsapp/models/messagelog/fields.yaml
+
+# Model Class name
+modelClass: GetByte\Whatsapp\Models\MessageLog
+
+# Default redirect location
+defaultRedirect: getbyte/whatsapp/messagelogs
+
+# Preview page
+preview:
+    title: Exibir Registro de Mensagens

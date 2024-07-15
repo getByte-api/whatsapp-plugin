@@ -1,0 +1,35 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+fields:
+    account:
+        label: De
+        span: storm
+        cssClass: col-md-5
+        type: relation
+    to_phone_number:
+        label: Para
+        span: storm
+        cssClass: col-md-7
+    message_type:
+        label: Tipo da Mensagem
+        span: storm
+        cssClass: col-md-4
+    sent_at:
+        label: Data Envio
+        type: datepicker
+        span: storm
+        cssClass: col-md-8
+    content:
+        label: Conteúdo
+        type: partial
+        span: storm
+        cssClass: col-md-12
+        path: $/getbyte/whatsapp/controllers/messagelogs/_data_dump.php
+    error:
+        label: Erro
+        type: partial
+        span: storm
+        cssClass: col-md-12
+        path: $/getbyte/whatsapp/controllers/messagelogs/_data_dump.php

@@ -1,0 +1,22 @@
+# ===================================
+#  List Behavior Config
+# ===================================
+
+title: Registros de Mensagens
+list: $/getbyte/whatsapp/models/messagelog/columns.yaml
+modelClass: GetByte\Whatsapp\Models\MessageLog
+
+# Link URL for each record
+recordUrl: getbyte/whatsapp/messagelogs/preview/:id
+
+noRecordsMessage: 'backend::lang.list.no_records'
+recordsPerPage: 20
+showSetup: true
+showCheckboxes: true
+defaultSort:
+    column: sent_at
+    direction: desc
+toolbar:
+    buttons: list_toolbar
+    search:
+        prompt: 'backend::lang.list.search_prompt'

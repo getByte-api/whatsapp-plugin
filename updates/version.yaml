@@ -1,0 +1,10 @@
+1.0.1: First version of GetByte Whatsapp
+1.0.2:
+    - Criando logica para envio de mensagens
+    - create_table_messages_log.php
+1.0.3:
+    - criando tabela de contas de whatsapp
+    - create_table_accounts.php
+1.0.4:
+    - removendo coluna de device e vinculando a conta
+    - change_messages_logs_account_relation.php

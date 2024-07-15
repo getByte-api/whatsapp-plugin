@@ -1,0 +1,26 @@
+columns:
+    sent_at:
+        label: Data Envio
+        type: datetime
+        searchable: true
+    status:
+        label: Status
+        type: partial
+        searchable: false
+        sortable: false
+    account:
+        label: De
+        relation: account
+        select: name
+        searchable: true
+        sortable: false
+    to_phone_number:
+        label: Para
+        type: text
+        searchable: true
+        sortable: false
+    message_type:
+        label: Assunto
+        type: text
+        searchable: true
+        sortable: false

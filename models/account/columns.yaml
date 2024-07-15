@@ -1,0 +1,26 @@
+columns:
+    status:
+        label: Status
+        type: partial
+        searchable: false
+        sortable: false
+    name:
+        label: Nome
+        type: text
+        searchable: true
+        sortable: true
+    connected_at:
+        label: Conectado em
+        type: datetime
+        searchable: false
+    created_at:
+        label: Criado em
+        type: datetime
+        searchable: false
+        invisible: true
+    action:
+        label: Ação
+        type: partial
+        searchable: false
+        sortable: false
+        clickable: false

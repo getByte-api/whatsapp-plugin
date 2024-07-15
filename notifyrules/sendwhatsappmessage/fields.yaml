@@ -1,0 +1,88 @@
+# ===================================
+#  Field Definitions
+# ===================================
+
+fields:
+    account_type:
+        label: Selecione uma conta ou informe a chave secreta
+        type: balloon-selector
+        options:
+            account: Selecionar Conta
+            secret_key: Chave secreta
+            account_id: ID da conta
+    account_id:
+        label: ID da conta
+        type: text
+        trigger:
+            action: show
+            field: account_type
+            condition: value[account_id]
+    account:
+        label: Conta
+        type: dropdown
+        trigger:
+            action: show
+            field: account_type
+            condition: value[account]
+    secret_key:
+        label: Chave secreta
+        type: text
+        trigger:
+            condition: value[secret_key]
+            action: show
+            field: account_type
+    user_phone_number:
+        label: Número de telefone de destino
+        type: text
+        comment: 'Número de telefone do usuário que receberá a mensagem. DDI + DDD + Número. Exemplo: 5511999999999'
+    message_type:
+        label: Tipo de mensagem
+        type: dropdown
+    text:
+        label: Corpo da mensagem
+        type: textarea
+        size: large
+        trigger:
+            action: show
+            field: message_type
+            condition: value[text]
+    image:
+        label: Imagem URL
+        type: text
+        span: full
+        required: true
+        comment: 'URL da imagem a ser enviada. Exemplo: https://www.example.com/image.jpg'
+        trigger:
+            action: show
+            field: message_type
+            condition: value[image]
+    document:
+        label: Documento URL
+        type: text
+        span: full
+        required: true
+        comment: 'URL do arquivo a ser enviado. Exemplo: https://www.example.com/file.pdf'
+        trigger:
+            action: show
+            field: message_type
+            condition: value[document]
+    document_filename:
+        label: Nome do arquivo
+        type: text
+        size: small
+        span: full
+        comment: 'Nome do arquivo a ser enviado. Exemplo: file.pdf. Opcional.'
+        trigger:
+            action: show
+            field: message_type
+            condition: value[document]
+    caption:
+        label: Legenda da mídia
+        type: textarea
+        size: small
+        span: full
+        comment: 'Legenda para a imagem, vídeo ou arquivo.'
+        trigger:
+            action: show
+            field: message_type
+            condition: value[image],value[document]

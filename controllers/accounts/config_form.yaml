@@ -1,0 +1,21 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: Conta de WhatsApp
+
+# Model Form Field configuration
+form: $/getbyte/whatsapp/models/account/fields.yaml
+
+# Model Class name
+modelClass: GetByte\Whatsapp\Models\Account
+
+# Default redirect location
+defaultRedirect: getbyte/whatsapp/accounts
+
+redirect: getbyte/whatsapp/accounts
+
+# Preview page
+preview:
+    title: 'Visualizar Conta de WhatsApp'

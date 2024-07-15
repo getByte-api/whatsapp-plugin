@@ -1,0 +1,16 @@
+plugin:
+    name: API getByte WhatsApp
+    description: 'Notificação por WhatsApp usando a API getByte WhatsApp'
+    author: 'General'
+    icon: oc-icon-notify-camera
+navigation:
+permissions:
+    getbyte.whatsapp.settings:
+        tab: API getByte
+        label: 'Configurações'
+    getbyte.whatsapp.logs:
+        tab: API getByte
+        label: 'Registros de envios'
+    getbyte.whatsapp.accounts:
+        tab: API getByte
+        label: 'Contas'

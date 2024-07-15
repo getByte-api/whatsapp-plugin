@@ -1,0 +1,22 @@
+# ===================================
+#  List Behavior Config
+# ===================================
+
+title: Contas de WhatsApp
+list: $/getbyte/whatsapp/models/account/columns.yaml
+modelClass: GetByte\Whatsapp\Models\Account
+
+# Link URL for each record
+recordUrl: getbyte/whatsapp/accounts/preview/:id
+
+noRecordsMessage: 'backend::lang.list.no_records'
+recordsPerPage: 20
+showSetup: true
+showCheckboxes: false
+defaultSort:
+    column: sent_at
+    direction: desc
+toolbar:
+    buttons: list_toolbar
+    search:
+        prompt: 'backend::lang.list.search_prompt'
