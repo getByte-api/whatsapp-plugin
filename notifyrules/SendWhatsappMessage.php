@@ -53,13 +53,18 @@ class SendWhatsappMessage extends ActionBase
     public function triggerAction($params)
     {
         if ($this->host->account_type == 'account') {
-            $account = Account::where('id', $this->host->account)->firstOrFail();
+            $account = Account::find($this->host->account);
         } else if ($this->host->account_type == 'secret_key') {
             $secret_key = Util::twigRawParser((string)$this->host->secret_key, $params);
-            $account = Account::where('secret_key', $secret_key)->firstOrFail();
+            $account = Account::where('secret_key', $secret_key)->first();
         } else if ($this->host->account_type == 'account_id') {
             $account_id = Util::twigRawParser((string)$this->host->account_id, $params);
-            $account = Account::where('id', $account_id)->firstOrFail();
+            $account = Account::find($account_id);
+        }
+
+        if (!$account) {
+            trace_log('Whatsapp Account not found');
+            return;
         }
 
         if ($account->status != 'CONNECTED') {
