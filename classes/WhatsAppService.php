@@ -25,12 +25,10 @@ class WhatsAppService
             $statusResponse = WhatsAppEvolution::getStatus($account);
         }
 
-        if ($statusResponse->getStatus()) {
-            $account->status = $statusResponse->getStatus();
-        } else {
-            $account->status = 'CONNECTED';
-            $account->connected_at = now();
-        }
+        $status = $statusResponse->getStatus();
+        $account->status = $status ?: 'CONNECTED';
+        $account->connected_at = ($account->status == 'CONNECTED') ? now() : null;
+        $account->save();
 
         return $statusResponse;
     }

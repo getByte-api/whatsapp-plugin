@@ -87,18 +87,10 @@ class Accounts extends BaseController
         }
 
         try {
-            $statusResponse = WhatsAppService::getStatus($account);
+            WhatsAppService::getStatus($account);
         } catch (\Exception $exception) {
             throw new ValidationException(['account' => $exception->getMessage()]);
         }
-
-        if ($statusResponse->getStatus() != $account->status && $statusResponse->getStatus() == 'CONNECTED') {
-            $account->connected_at = now();
-        }
-
-        $account->status = $statusResponse->getStatus();
-
-        $account->save();
 
         Flash::success('Status atualizado');
         return redirect()->refresh();
@@ -143,16 +135,9 @@ class Accounts extends BaseController
         $model->whatsapp_type = $accountDetail->api_type;
 
         try {
-            $statusResponse = WhatsAppService::getStatus($model);
+            WhatsAppService::getStatus($model);
         } catch (\Exception $exception) {
             throw new ValidationException(['secret_key' => $exception->getMessage()]);
-        }
-
-        if ($statusResponse->getStatus()) {
-            $model->status = $statusResponse->getStatus();
-        } else {
-            $model->status = 'CONNECTED';
-            $model->connected_at = now();
         }
     }
 }
