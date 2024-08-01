@@ -2,7 +2,7 @@
 
 namespace GetByte\Whatsapp\Classes;
 
-use General\General\Classes\Helpers\Phone;
+use GetByte\Whatsapp\Classes\Helpers\Phone;
 use GetByte\Whatsapp\Models\Account;
 use GetByte\Whatsapp\Models\MessageLog;
 
@@ -35,6 +35,8 @@ class WhatsAppService
 
     public static function send(Account $account, string $messageType, string $phoneNumber, string $content, $document_filename = null, $caption = null)
     {
+        $phoneNumber = Phone::justnumber($phoneNumber);
+
         if ($phoneNumber && Phone::validate($phoneNumber)) {
 
             try {

@@ -2,7 +2,6 @@
 
 namespace GetByte\Whatsapp\Classes;
 
-use General\General\Classes\Helpers\Phone;
 use GetByte\Whatsapp\Models\Account;
 use GuzzleHttp\Exception\RequestException;
 
@@ -67,7 +66,7 @@ class WhatsAppEvolution
             $response = self::http($account)
                 ->post('evolution/message/sendText', [
                     'json' => [
-                        "number"      => Phone::justnumber($user_phone_number),
+                        "number"      => $user_phone_number,
                         "options"     => [
                             "delay"    => 0,
                             "presence" => "composing"
@@ -89,7 +88,7 @@ class WhatsAppEvolution
         $media = base64_encode(file_get_contents($mediaUrl));
 
         $payload = [
-            "number"       => Phone::justnumber($user_phone_number),
+            "number"       => $user_phone_number,
             "options"      => [
                 "delay"    => 1200,
                 "presence" => "composing"

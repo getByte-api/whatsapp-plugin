@@ -2,7 +2,6 @@
 
 namespace GetByte\Whatsapp\Classes;
 
-use General\General\Classes\Helpers\Phone;
 use GetByte\Whatsapp\Models\Account;
 use GuzzleHttp\Exception\RequestException;
 
@@ -40,7 +39,7 @@ class WhatsAppWpp
             $response = self::http($account)
                 ->post('whatsapp/sendText', [
                     'json' => [
-                        "number"      => Phone::justnumber($user_phone_number),
+                        "number"      => $user_phone_number,
                         "text"        => $message,
                         "time_typing" => 0,
                         "options"     => [
@@ -65,7 +64,7 @@ class WhatsAppWpp
             $response = self::http($account)
                 ->post('whatsapp/sendFile', [
                     'json' => [
-                        "number"  => Phone::justnumber($user_phone_number),
+                        "number"  => $user_phone_number,
                         "path"    => $mediaUrl,
                         'caption' => $caption ?? '',
                     ]
