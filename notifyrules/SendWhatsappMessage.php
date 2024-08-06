@@ -1,7 +1,6 @@
 <?php namespace GetByte\Whatsapp\NotifyRules;
 
 use GetByte\Whatsapp\Classes\Helpers\Lazy;
-use GetByte\Whatsapp\Classes\Helpers\Phone;
 use GetByte\Whatsapp\Classes\WhatsAppService;
 use GetByte\Whatsapp\Models\Account;
 use RainLab\Notify\Classes\ActionBase;
