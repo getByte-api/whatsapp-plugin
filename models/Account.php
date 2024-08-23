@@ -36,4 +36,9 @@ class Account extends Model
     ];
 
     protected $dates = ['connected_at'];
+
+    public function getApiCheckStatusUrlAttribute()
+    {
+        return url('whatsapp/check-status/' . $this->id);
+    }
 }

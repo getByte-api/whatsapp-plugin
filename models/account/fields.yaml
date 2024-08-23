@@ -18,3 +18,9 @@ fields:
         readOnly: true
         cssClass: col-md-12
         type: sensitive
+    _api_check_status_url@update:
+        label: URL de Verificação de Status via API
+        span: storm
+        cssClass: col-md-12
+        type: text
+        readOnly: true

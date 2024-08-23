@@ -39,3 +39,19 @@ Route::post('connect/whatsapp/connect-device', function (\Illuminate\Http\Reques
         return response()->json(['error' => $e->getMessage()]);
     }
 });
+
+Route::get('whatsapp/check-status/{account_id}', function (\Illuminate\Http\Request $request) {
+    try {
+        $account_id = $request->account_id;
+        $account = Account::where('id', $account_id)->firstOrFail();
+    } catch (Exception $e) {
+        return response()->json(['error' => 'Conta não encontrada'], 404);
+    }
+
+    return response()->json([
+        'name'         => $account->name,
+        'status'       => $account->status,
+        'connected_at' => $account->connected_at,
+    ]);
+});
+
