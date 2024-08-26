@@ -59,10 +59,16 @@ class SendWhatsappMessage extends ActionBase
         } else if ($this->host->account_type == 'account_id') {
             $account_id = Lazy::twigRawParser((string)$this->host->account_id, $params);
             $account = Account::find($account_id);
+        } else {
+            $account = null;
+        }
+
+        if (!$account && ($this->host->secret_key || $this->host->account_id)) {
+            trace_log('Whatsapp Account not found');
+            return;
         }
 
         if (!$account) {
-            trace_log('Whatsapp Account not found');
             return;
         }
 
