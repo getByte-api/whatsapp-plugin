@@ -16,19 +16,21 @@ class WhatsAppWpp
 
     public static function getStatus(Account $account): StatusConnectionResponse
     {
+        $status = new StatusConnectionResponse();
+
         try {
-            $response = self::http($account)
-                ->post('whatsapp/start');
+            $response = self::http($account)->post('whatsapp/start');
         } catch (RequestException $e) {
-            throw new ApiException($e->getResponse());
+            $exception = new ApiException($e->getResponse());
+            $status->setStatus($exception->getMessage());
+            return $status;
         }
 
         $response = json_decode($response->getBody()->getContents());
-
-        $status = new StatusConnectionResponse();
         $status->setStatus($response->response->state ?? 'CONNECTED');
-        if ($response->response && property_exists($response->response, 'qrcode'))
+        if ($response->response && property_exists($response->response, 'qrcode')) {
             $status->setQrCode($response->response?->qrcode);
+        }
 
         return $status;
     }

@@ -45,15 +45,17 @@ class WhatsAppEvolution
 
     public static function getStatus(Account $account): StatusConnectionResponse
     {
+        $status = new StatusConnectionResponse();
+
         try {
             $response = self::http($account)->get('evolution/instance/connectionState');
         } catch (RequestException $e) {
-            throw new ApiException($e->getResponse());
+            $exception = new ApiException($e->getResponse());
+            $status->setStatus($exception->getMessage());
+            return $status;
         }
 
         $responseState = json_decode($response->getBody()->getContents());
-
-        $status = new StatusConnectionResponse();
         $statusCode = $responseState ? $responseState->response?->instance?->state : 'disconnected';
         $status->setStatus($statusCode);
 
