@@ -61,18 +61,43 @@ class Accounts extends BaseController
         $account = Account::find(post('account_id'));
         $message = post('message');
         $phone = post('phone');
+        $message_type = post('message_type');
+        $file_url = post('file_url');
+
+        if (!$phone) {
+            Flash::error('Telefone não informado');
+            return;
+        }
 
         if (!$account) {
             Flash::error('Conta não encontrada');
             return;
         }
 
-        if (!$message) {
+        if (!$message && $message_type == 'text') {
             Flash::error('Mensagem não informada');
             return;
         }
 
-        WhatsAppService::send($account, 'text', $phone, $message);
+        if (!$file_url && $message_type == 'image') {
+            Flash::error('Url da Imagem não informada');
+            return;
+        }
+
+        if (!$file_url && $message_type == 'document') {
+            Flash::error('Url do Documento não informada');
+            return;
+        }
+
+        try {
+            if ($message_type == 'document' || $message_type == 'image') {
+                WhatsAppService::send($account, $message_type, $phone, $file_url, null, $message ?: 'Teste de Mensagem');
+            } else {
+                WhatsAppService::send($account, $message_type, $phone, $message);
+            }
+        } catch (\Exception $exception) {
+            throw new ValidationException(['account' => $exception->getMessage()]);
+        }
 
         Flash::success('Mensagem enviada com sucesso');
     }
@@ -126,7 +151,12 @@ class Accounts extends BaseController
     public function formBeforeCreate($model)
     {
         $model->fill((array)post('Account'));
-        $accountDetail = GetByteService::getDetail($model);
+
+        try {
+            $accountDetail = GetByteService::getDetail($model);
+        } catch (\Exception $exception) {
+            throw new ValidationException(['secret_key' => $exception->getMessage()]);
+        }
 
         if (property_exists($accountDetail, 'error') && $accountDetail->error) {
             throw new ValidationException(['secret_key' => $accountDetail?->error]);
