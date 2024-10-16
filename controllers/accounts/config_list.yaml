@@ -7,7 +7,7 @@ list: $/getbyte/whatsapp/models/account/columns.yaml
 modelClass: GetByte\Whatsapp\Models\Account
 
 # Link URL for each record
-recordUrl: getbyte/whatsapp/accounts/preview/:id
+recordUrl: getbyte/whatsapp/accounts/update/:id
 
 noRecordsMessage: 'backend::lang.list.no_records'
 recordsPerPage: 20

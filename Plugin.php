@@ -1,6 +1,8 @@
 <?php namespace GetByte\Whatsapp;
 
 use Backend\Facades\Backend;
+use GetByte\Whatsapp\Classes\WhatsAppService;
+use GetByte\Whatsapp\Models\Account;
 use GetByte\Whatsapp\Models\MessageLog;
 use GetByte\Whatsapp\Models\Settings;
 use GetByte\Whatsapp\NotifyRules\SendWhatsappMessage;
@@ -32,7 +34,7 @@ class Plugin extends PluginBase
                 'order'       => 500,
                 'keywords'    => 'whatsapp api getbyte',
             ],
-            'logs'  => [
+            'logs'     => [
                 'label'       => 'Registros de Mensagens de WhatsApp',
                 'description' => 'Ver registros de mensagens de WhatsApp enviadas.',
                 'category'    => SettingsManager::CATEGORY_LOGS,
@@ -42,7 +44,7 @@ class Plugin extends PluginBase
                 'keywords'    => 'whatsapp api getbyte log',
                 'permissions' => ['getbyte.whatsapp.logs']
             ],
-            'accounts'  => [
+            'accounts' => [
                 'label'       => 'Contas de WhatsApp',
                 'description' => 'Gerenciar contas de WhatsApp.',
                 'category'    => 'API getByte',
@@ -62,5 +64,12 @@ class Plugin extends PluginBase
             $date = now()->subDays($days);
             MessageLog::where('sent_at', '<', $date)->delete();
         })->daily();
+
+        $schedule->call(function () {
+            $accounts = Account::all();
+            foreach ($accounts as $account) {
+                WhatsAppService::getStatus($account);
+            }
+        })->everyFifteenMinutes();
     }
 }

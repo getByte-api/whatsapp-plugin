@@ -1,9 +1,8 @@
 <?php namespace GetByte\Whatsapp\NotifyRules;
 
+use GetByte\Whatsapp\Classes\Helpers\Lazy;
 use GetByte\Whatsapp\Classes\WhatsAppService;
 use GetByte\Whatsapp\Models\Account;
-use General\General\Classes\Helpers\Phone;
-use General\General\Classes\Helpers\Util;
 use RainLab\Notify\Classes\ActionBase;
 
 class SendWhatsappMessage extends ActionBase
@@ -55,15 +54,21 @@ class SendWhatsappMessage extends ActionBase
         if ($this->host->account_type == 'account') {
             $account = Account::find($this->host->account);
         } else if ($this->host->account_type == 'secret_key') {
-            $secret_key = Util::twigRawParser((string)$this->host->secret_key, $params);
+            $secret_key = Lazy::twigRawParser((string)$this->host->secret_key, $params);
             $account = Account::where('secret_key', $secret_key)->first();
         } else if ($this->host->account_type == 'account_id') {
-            $account_id = Util::twigRawParser((string)$this->host->account_id, $params);
+            $account_id = Lazy::twigRawParser((string)$this->host->account_id, $params);
             $account = Account::find($account_id);
+        } else {
+            $account = null;
+        }
+
+        if (!$account && ($this->host->secret_key || $this->host->account_id)) {
+            trace_log('Whatsapp Account not found');
+            return;
         }
 
         if (!$account) {
-            trace_log('Whatsapp Account not found');
             return;
         }
 
@@ -72,21 +77,20 @@ class SendWhatsappMessage extends ActionBase
             throw new \Exception('The WhatsApp account is not connected - ' . $account->status . ' - ' . $account->name);
         }
 
-        $phoneNumber = Util::twigRawParser((string)$this->host->user_phone_number, $params);
-        $phoneNumber = '55' . ltrim($phoneNumber, '55');
-        $phoneNumber = Phone::justnumber($phoneNumber);
-        $document_filename = Util::twigRawParser((string)$this->host->document_filename, $params);
-        $caption = Util::twigRawParser((string)$this->host->caption, $params);
+        $phoneNumber = Lazy::twigRawParser((string)$this->host->user_phone_number, $params);
+
+        $document_filename = Lazy::twigRawParser((string)$this->host->document_filename, $params);
+        $caption = Lazy::twigRawParser((string)$this->host->caption, $params);
         $messageType = (string)$this->host->message_type;
 
         if ($messageType == 'text') {
-            $content = Util::twigRawParser((string)$this->host->text, $params);
+            $content = Lazy::twigRawParser((string)$this->host->text, $params);
         } else if ($messageType == 'image') {
-            $content = Util::twigRawParser((string)$this->host->image, $params);
+            $content = Lazy::twigRawParser((string)$this->host->image, $params);
         } else if ($messageType == 'document') {
-            $content = Util::twigRawParser((string)$this->host->document, $params);
+            $content = Lazy::twigRawParser((string)$this->host->document, $params);
         } else {
-            $content = Util::twigRawParser($messageType, $params);
+            $content = Lazy::twigRawParser($messageType, $params);
         }
 
         try {

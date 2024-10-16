@@ -7,8 +7,20 @@ fields:
         label: Nome
         span: storm
         cssClass: col-md-12
-    secret_key:
+    secret_key@create:
         label: Chave Secreta
         span: storm
         cssClass: col-md-12
         type: sensitive
+    secret_key@update:
+        label: Chave Secreta
+        span: storm
+        readOnly: true
+        cssClass: col-md-12
+        type: sensitive
+    _api_check_status_url@update:
+        label: URL de Verificação de Status via API
+        span: storm
+        cssClass: col-md-12
+        type: text
+        readOnly: true

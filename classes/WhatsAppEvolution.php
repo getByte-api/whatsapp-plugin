@@ -2,7 +2,6 @@
 
 namespace GetByte\Whatsapp\Classes;
 
-use General\General\Classes\Helpers\Phone;
 use GetByte\Whatsapp\Models\Account;
 use GuzzleHttp\Exception\RequestException;
 
@@ -46,15 +45,17 @@ class WhatsAppEvolution
 
     public static function getStatus(Account $account): StatusConnectionResponse
     {
+        $status = new StatusConnectionResponse();
+
         try {
             $response = self::http($account)->get('evolution/instance/connectionState');
         } catch (RequestException $e) {
-            throw new ApiException($e->getResponse());
+            $exception = new ApiException($e->getResponse());
+            $status->setStatus($exception->getMessage());
+            return $status;
         }
 
         $responseState = json_decode($response->getBody()->getContents());
-
-        $status = new StatusConnectionResponse();
         $statusCode = $responseState ? $responseState->response?->instance?->state : 'disconnected';
         $status->setStatus($statusCode);
 
@@ -67,7 +68,7 @@ class WhatsAppEvolution
             $response = self::http($account)
                 ->post('evolution/message/sendText', [
                     'json' => [
-                        "number"      => Phone::justnumber($user_phone_number),
+                        "number"      => $user_phone_number,
                         "options"     => [
                             "delay"    => 0,
                             "presence" => "composing"
@@ -89,7 +90,7 @@ class WhatsAppEvolution
         $media = base64_encode(file_get_contents($mediaUrl));
 
         $payload = [
-            "number"       => Phone::justnumber($user_phone_number),
+            "number"       => $user_phone_number,
             "options"      => [
                 "delay"    => 1200,
                 "presence" => "composing"

@@ -16,6 +16,12 @@ defaultRedirect: getbyte/whatsapp/accounts
 
 redirect: getbyte/whatsapp/accounts
 
+# Update page
+update:
+    title: backend::lang.form.update_title
+    redirect: getbyte/whatsapp/accounts
+    redirectClose: getbyte/whatsapp/accounts
+
 # Preview page
 preview:
-    title: 'Visualizar Conta de WhatsApp'
+    title: backend::lang.form.preview_title

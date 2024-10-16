@@ -2,7 +2,6 @@
 
 namespace GetByte\Whatsapp\Classes;
 
-use General\General\Classes\Helpers\Phone;
 use GetByte\Whatsapp\Models\Account;
 use GuzzleHttp\Exception\RequestException;
 
@@ -17,19 +16,21 @@ class WhatsAppWpp
 
     public static function getStatus(Account $account): StatusConnectionResponse
     {
+        $status = new StatusConnectionResponse();
+
         try {
-            $response = self::http($account)
-                ->post('whatsapp/start');
+            $response = self::http($account)->post('whatsapp/start');
         } catch (RequestException $e) {
-            throw new ApiException($e->getResponse());
+            $exception = new ApiException($e->getResponse());
+            $status->setStatus($exception->getMessage());
+            return $status;
         }
 
         $response = json_decode($response->getBody()->getContents());
-
-        $status = new StatusConnectionResponse();
         $status->setStatus($response->response->state ?? 'CONNECTED');
-        if ($response->response && property_exists($response->response, 'qrcode'))
+        if ($response->response && property_exists($response->response, 'qrcode')) {
             $status->setQrCode($response->response?->qrcode);
+        }
 
         return $status;
     }
@@ -40,7 +41,7 @@ class WhatsAppWpp
             $response = self::http($account)
                 ->post('whatsapp/sendText', [
                     'json' => [
-                        "number"      => Phone::justnumber($user_phone_number),
+                        "number"      => $user_phone_number,
                         "text"        => $message,
                         "time_typing" => 0,
                         "options"     => [
@@ -65,7 +66,7 @@ class WhatsAppWpp
             $response = self::http($account)
                 ->post('whatsapp/sendFile', [
                     'json' => [
-                        "number"  => Phone::justnumber($user_phone_number),
+                        "number"  => $user_phone_number,
                         "path"    => $mediaUrl,
                         'caption' => $caption ?? '',
                     ]
