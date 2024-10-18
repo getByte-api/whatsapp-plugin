@@ -24,3 +24,9 @@ columns:
         type: text
         searchable: true
         sortable: false
+    action:
+        label: Ação
+        type: partial
+        searchable: false
+        sortable: false
+        clickable: false
