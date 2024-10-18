@@ -67,7 +67,7 @@ class Plugin extends PluginBase
 
         $check_status_time = (int)Settings::get('check_status_time', 15); //minutes
 
-        if($check_status_time) {
+        if ($check_status_time) {
             $schedule->call(function () {
                 $accounts = Account::all();
                 foreach ($accounts as $account) {
