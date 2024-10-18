@@ -30,8 +30,8 @@ class WhatsAppService
         }
 
         $status = $statusResponse->getStatus();
-        $account->status = $status ?: 'CONNECTED';
-        $account->connected_at = ($account->status == 'CONNECTED') ? now() : null;
+        $account->connected_at = ($status == 'CONNECTED' && $account->status != $status) ? now() : null;
+        $account->status = $status ?: 'DISCONNECTED';
         $account->save();
 
         return $statusResponse;
