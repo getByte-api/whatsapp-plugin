@@ -65,11 +65,15 @@ class Plugin extends PluginBase
             MessageLog::where('sent_at', '<', $date)->delete();
         })->daily();
 
-        $schedule->call(function () {
-            $accounts = Account::all();
-            foreach ($accounts as $account) {
-                WhatsAppService::getStatus($account);
-            }
-        })->everyFifteenMinutes();
+        $check_status_time = (int)Settings::get('check_status_time', 15); //minutes
+
+        if($check_status_time) {
+            $schedule->call(function () {
+                $accounts = Account::all();
+                foreach ($accounts as $account) {
+                    WhatsAppService::getStatus($account);
+                }
+            })->cron('*/' . $check_status_time . ' * * * *');
+        }
     }
 }

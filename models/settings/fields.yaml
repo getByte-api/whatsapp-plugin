@@ -9,3 +9,9 @@ fields:
         span: auto
         default: 7
         type: number
+    check_status_time:
+        label: 'Verificar status a cada x minutos'
+        comment: 'Intervalo de tempo para verificar o status de envio'
+        span: auto
+        default: 15
+        type: number
