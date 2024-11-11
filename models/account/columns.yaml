@@ -4,6 +4,10 @@ columns:
         type: partial
         searchable: false
         sortable: false
+    is_active:
+        label: Ativo
+        type: switch
+        searchable: false
     name:
         label: Nome
         type: text

@@ -6,11 +6,12 @@ fields:
     is_active:
         label: Ativo
         span: storm
-        cssClass: col-md-3
+        type: switch
+        cssClass: col-md-2
     name:
         label: Nome
         span: storm
-        cssClass: col-md-9
+        cssClass: col-md-10
     secret_key@create:
         label: Chave Secreta
         span: storm

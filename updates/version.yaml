@@ -8,3 +8,6 @@
 1.0.4:
     - removendo coluna de device e vinculando a conta
     - change_messages_logs_account_relation.php
+1.0.5:
+    - criando coluna de ativo na tabela de accounts
+    - add_is_active_column.php
