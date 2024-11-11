@@ -3,10 +3,14 @@
 # ===================================
 
 fields:
+    is_active:
+        label: Ativo
+        span: storm
+        cssClass: col-md-3
     name:
         label: Nome
         span: storm
-        cssClass: col-md-12
+        cssClass: col-md-9
     secret_key@create:
         label: Chave Secreta
         span: storm

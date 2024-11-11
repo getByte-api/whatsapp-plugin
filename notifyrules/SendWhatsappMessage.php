@@ -72,6 +72,10 @@ class SendWhatsappMessage extends ActionBase
             return;
         }
 
+        if (!$account->is_active) {
+            return;
+        }
+
         if ($account->status != 'CONNECTED') {
             WhatsAppService::getStatus($account);
             throw new \Exception('The WhatsApp account is not connected - ' . $account->status . ' - ' . $account->name);
