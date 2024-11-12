@@ -64,7 +64,7 @@ class SendWhatsappMessage extends ActionBase
         }
 
         if (!$account && ($this->host->secret_key || $this->host->account_id)) {
-            trace_log('Whatsapp Account not found');
+            trace_log('Whatsapp Account not found. Secret Key: ' . $this->host->secret_key . ' Account ID: ' . $this->host->account_id);
             return;
         }
 
