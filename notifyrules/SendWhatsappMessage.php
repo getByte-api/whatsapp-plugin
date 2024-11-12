@@ -51,6 +51,9 @@ class SendWhatsappMessage extends ActionBase
      */
     public function triggerAction($params)
     {
+        $secret_key = null;
+        $account_id = null;
+
         if ($this->host->account_type == 'account') {
             $account = Account::find($this->host->account);
         } else if ($this->host->account_type == 'secret_key') {
@@ -63,8 +66,8 @@ class SendWhatsappMessage extends ActionBase
             $account = null;
         }
 
-        if (!$account && ($this->host->secret_key || $this->host->account_id)) {
-            trace_log('Whatsapp Account not found. Secret Key: ' . $this->host->secret_key . ' Account ID: ' . $this->host->account_id);
+        if (!$account && ($secret_key || $account_id)) {
+            trace_log('Whatsapp Account not found. Secret Key: ' . $secret_key . ' Account ID: ' . $account_id);
             return;
         }
 
