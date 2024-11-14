@@ -6,6 +6,8 @@ class StatusConnectionResponse
 {
     protected $qrcode;
 
+    protected $pairingCode;
+
     protected $status = 'DISCONNECTED';
 
     public function getStatus()
@@ -21,6 +23,11 @@ class StatusConnectionResponse
     public function setQrCode($qrcode = null)
     {
         $this->qrcode = $qrcode;
+    }
+
+    public function setpairingCode($pairingCode = null)
+    {
+        $this->pairingCode = $pairingCode;
     }
 
     public function setStatus($status = null)
@@ -40,8 +47,9 @@ class StatusConnectionResponse
     public function toArray()
     {
         return [
-            'status' => $this->status,
-            'qrcode' => $this->qrcode,
+            'status'     => $this->status,
+            'qrcode'     => $this->qrcode,
+            'pairingCode' => $this->pairingCode
         ];
     }
 }

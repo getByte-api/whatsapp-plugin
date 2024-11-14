@@ -10,24 +10,12 @@ class WhatsAppService
 {
     public static function connect(Account $account)
     {
-        if ($account->whatsapp_type == 'whatsapp-wpp') {
-            return WhatsAppWpp::connect($account);
-        } else if ($account->whatsapp_type == 'whatsapp-evolution') {
-            return WhatsAppEvolution::connect($account);
-        } else if ($account->whatsapp_type == 'wpp-getbyte') {
-            return WhatsAppWppGetByte::connect($account);
-        }
+        return $account->getClassProvider()::connect($account);
     }
 
     public static function getStatus(Account $account): StatusConnectionResponse
     {
-        if ($account->whatsapp_type == 'whatsapp-wpp') {
-            $statusResponse = WhatsAppWpp::getStatus($account);
-        } else if ($account->whatsapp_type == 'whatsapp-evolution') {
-            $statusResponse = WhatsAppEvolution::getStatus($account);
-        } else if ($account->whatsapp_type == 'wpp-getbyte') {
-            $statusResponse = WhatsAppWppGetByte::getStatus($account);
-        }
+        $statusResponse = $account->getClassProvider()::getStatus($account);
 
         $status = $statusResponse->getStatus();
         $account->connected_at = ($status == 'CONNECTED' && $account->status != $status) ? now() : null;
@@ -44,22 +32,12 @@ class WhatsAppService
         if ($phoneNumber && Phone::validate($phoneNumber)) {
 
             try {
+                $provider = $account->getClassProvider();
+
                 if ($messageType == 'image' || $messageType == 'document') {
-                    if ($account->whatsapp_type == 'whatsapp-wpp') {
-                        WhatsAppWpp::sendMedia($messageType, $phoneNumber, $content, $account, $caption);
-                    } else if ($account->whatsapp_type == 'whatsapp-evolution') {
-                        WhatsAppEvolution::sendMedia($messageType, $phoneNumber, $content, $account, $caption, $document_filename);
-                    } else if ($account->whatsapp_type == 'wpp-getbyte') {
-                        WhatsAppWppGetByte::sendMedia($messageType, $phoneNumber, $content, $account, $caption, $document_filename);
-                    }
+                    $provider::sendMedia($messageType, $phoneNumber, $content, $account, $caption, $document_filename);
                 } else {
-                    if ($account->whatsapp_type == 'whatsapp-wpp') {
-                        WhatsAppWpp::sendText($phoneNumber, $content, $account);
-                    } else if ($account->whatsapp_type == 'whatsapp-evolution') {
-                        WhatsAppEvolution::sendText($phoneNumber, $content, $account);
-                    } else if ($account->whatsapp_type == 'wpp-getbyte') {
-                        WhatsAppWppGetByte::sendText($phoneNumber, $content, $account);
-                    }
+                    $provider::sendText($phoneNumber, $content, $account);
                 }
 
                 MessageLog::create([

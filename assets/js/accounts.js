@@ -37,6 +37,14 @@ function checkConnectionDevice(account_id) {
                 $('.qrcode-container').removeClass('d-none');
                 $('#qrcode').html('<img src="' + data.qrcode + '" alt="QR Code" />');
                 $('#message-qrcode').html('Leia o QR Code com o seu WhatsApp');
+
+                if (data.pairingCode) {
+                    $('.pairing-container').removeClass('d-none');
+                    let code = data.pairingCode;
+                    let firstPart = code.substring(0, 4);
+                    let secondPart = code.substring(4, 8);
+                    $('[name="pairing_code"]').val(firstPart + '-' + secondPart);
+                }
             }
         },
         error: function (data) {

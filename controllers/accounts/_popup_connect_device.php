@@ -33,6 +33,21 @@
             </div>
             <div id="message-qrcode" class="alert alert-primary message" role="alert">Gerando o QR code. Por favor, aguarde. Esse processo pode demorar alguns segundos.</div>
         </div>
+
+        <div class="row mb-3 d-none pairing-container">
+            <div class="col-sm d-flex justify-content-center">
+                <label for="pairing_code_input" class="form-label" id="pairing_code_label">ou informe o código gerado no aplicativo do WhatsApp</label>
+                <input
+                    type="text"
+                    name="pairing_code"
+                    readonly
+                    class="form-control mx-auto"
+                    placeholder="Informe o código de pariedade gerado pelo WhatsApp"
+                    id="pairing_code_input"
+                    style="width: 50%; text-align: center;"
+                >
+            </div>
+        </div>
     </div>
 
     <div class="modal-footer">
