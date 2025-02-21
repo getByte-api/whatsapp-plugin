@@ -148,6 +148,24 @@ class Accounts extends BaseController
         return $statusResponse->toArray();
     }
 
+    public function onLogout()
+    {
+        $account = Account::find(post('account_id'));
+
+        if (!$account) {
+            throw new ValidationException(['error' => 'Conta não encontrada']);
+        }
+
+        try {
+            WhatsAppService::logout($account);
+            $account->status = 'DISCONNECTED';
+            $account->save();
+            return ['success' => true];
+        } catch (\Exception $exception) {
+            throw new ValidationException(['error' => $exception->getMessage()]);
+        }
+    }
+
     public function formBeforeCreate($model)
     {
         $model->fill((array)post('Account'));

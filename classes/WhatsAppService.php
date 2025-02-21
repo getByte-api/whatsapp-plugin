@@ -25,6 +25,12 @@ class WhatsAppService
         return $statusResponse;
     }
 
+    public static function logout(Account $account)
+    {
+        $provider = $account->getClassProvider();
+        return $provider::logout($account);
+    }
+
     public static function send(Account $account, string $messageType, string $phoneNumber, string $content, $document_filename = null, $caption = null)
     {
         $phoneNumber = Phone::justnumber($phoneNumber);

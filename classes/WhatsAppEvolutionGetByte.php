@@ -111,4 +111,15 @@ class WhatsAppEvolutionGetByte
 
         return json_decode($response->getBody()->getContents());
     }
+
+    public static function logout(Account $account)
+    {
+        try {
+            $response = self::http($account)->delete('evo/instance/logout');
+        } catch (RequestException $e) {
+            throw new ApiException($e->getResponse());
+        }
+
+        return json_decode($response->getBody()->getContents());
+    }
 }
