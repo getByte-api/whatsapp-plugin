@@ -2,6 +2,7 @@
 
 use GetByte\Whatsapp\Classes\WhatsAppService;
 use GetByte\Whatsapp\Models\Account;
+use GetByte\Whatsapp\Controllers\Connect;
 
 Route::get('connect/whatsapp/{Key}', function (\Illuminate\Http\Request $request) {
     try {
@@ -53,5 +54,10 @@ Route::get('whatsapp/check-status/{account_id}', function (\Illuminate\Http\Requ
         'status'       => $account->status,
         'connected_at' => $account->connected_at,
     ]);
+});
+
+Route::group(['prefix' => 'connect/whatsapp'], function() {
+    Route::post('connect-device', [Connect::class, 'connectDevice']);
+    Route::post('logout', [Connect::class, 'logout']);
 });
 

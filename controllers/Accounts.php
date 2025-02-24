@@ -45,12 +45,6 @@ class Accounts extends BaseController
         return $this->makePartial('popup_send_test');
     }
 
-    public function index_onLoadConnectDevice()
-    {
-        $this->vars['account_id'] = post('account_id');
-        return $this->makePartial('popup_connect_device');
-    }
-
     public function onSendTest()
     {
         if (!$this->user->hasAccess('getbyte.whatsapp.accounts.send_test')) {
@@ -119,33 +113,6 @@ class Accounts extends BaseController
 
         Flash::success('Status atualizado');
         return redirect()->refresh();
-    }
-
-    public function onConnectDevice()
-    {
-        $account = Account::find(post('account_id'));
-
-        if (!$account) {
-            Flash::error('Conta não encontrada');
-            return;
-        }
-
-        try {
-            $statusResponse = WhatsAppService::connect($account);
-        } catch (\Exception $exception) {
-            throw new ValidationException(['account' => $exception->getMessage()]);
-        }
-
-        $account->status = $statusResponse->getStatus();
-
-        if ($account->status == 'CONNECTED') {
-            $account->connected_at = now();
-            Flash::success('Conexão estabelecida com sucesso.');
-        }
-
-        $account->save();
-
-        return $statusResponse->toArray();
     }
 
     public function onLogout()
