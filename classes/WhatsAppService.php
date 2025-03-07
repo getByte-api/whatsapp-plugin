@@ -62,7 +62,7 @@ class WhatsAppService
                     'to_phone_number' => $phoneNumber,
                     'account_id'      => $account->id,
                     'message_type'    => $messageType,
-                    'error'           => $e->getMessage(),
+                    'error'           => $e->getContent(),
                     'content'         => [
                         'content'           => $content,
                         'document_filename' => $document_filename ?? '',

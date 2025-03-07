@@ -25,6 +25,11 @@ class ApiException extends \Exception
         return $this->response;
     }
 
+    public function getContent()
+    {
+        return $this->content;
+    }
+
     protected function prepareMessage()
     {
         $message = '';

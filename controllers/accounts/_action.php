@@ -11,15 +11,6 @@
 <?php endif; ?>
 <?php if ($record->status != 'CONNECTED'): ?>
     <button type="button"
-            data-control="popup"
-            data-handler="onLoadConnectDevice"
-            data-request-data="account_id: <?= $record->id ?>"
-            href="javascript:;"
-            data-bs-toggle="tooltip"
-            data-bs-placement="bottom"
-            data-bs-title="Conectar"
-            class="btn btn-sm btn-info"><i class="fa-solid fa-qrcode"></i></button>
-    <button type="button"
             data-request-data="account_id: <?= $record->id ?>"
             data-bs-toggle="tooltip"
             data-bs-placement="bottom"
